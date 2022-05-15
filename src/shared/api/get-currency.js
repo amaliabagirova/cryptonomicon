@@ -1,4 +1,7 @@
 import {baseRequest} from "./base-request";
 
-export const getCurrency = (coinName) => baseRequest({url: `/price?fsym=${coinName}&tsyms=USD`, method: 'GET'})
-    .then(res => res.USD)
+export const getCurrency = (coinName, cur) => baseRequest({url: `/pricemultifull?fsyms=${coinName}&tsyms=${cur}`, method: 'GET'})
+    .then(res => {return res['DISPLAY'][coinName][cur]['PRICE']})
+
+
+

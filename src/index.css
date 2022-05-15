@@ -1,0 +1,301 @@
+
+body {
+    background-color: #ffffff;
+    background-image: url("/public/meme-background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family:  Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto, Helvetica, Arial, sans-serif;;
+    color: #000000;
+    padding: 50px 100px;
+    margin: 0px;
+    background-position: bottom 65% right 1%;
+}
+
+
+h2 {
+    color: #000000;
+    font-size: 50px;
+}
+
+.blocktext {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    max-width: 1000px;
+    margin: 0rem 0rem;
+    color: #000000;
+    overflow: auto;
+    border: none;
+    background: rgb(255, 255, 255);
+}
+
+
+#titleInput {
+    background-color: transparent;
+    color: #0e0e0e;
+    font-size: 1em;
+    height: 20px;
+    text-align: left;
+    letter-spacing: 1px;
+    padding: 15px 10px;
+    width: 50%;
+    font-family:  Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto, Helvetica, Arial, sans-serif;;
+    border: none;
+    outline: none;
+    border: 0px;
+    position: relative;
+}
+#titleInput::placeholder {
+    color: rgba(128, 138, 157, 0.51);
+    font-size: 14px;
+    font-weight: 100;
+ }
+#titleInput {
+    margin-bottom: 10px;
+}
+#titleInput {
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    border-top: 0px solid #eef0f5;
+    border-radius: 1px;
+}
+
+
+
+.parent {
+    width: 1000px;
+}
+.coin {
+    font-size: 0.7rem;
+    color: #616370;
+    font-weight: 100;
+    position: relative;
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+}
+
+.submit{
+    background: rgb(56, 97, 251);
+    border: 0px;
+    border-radius: 8px;
+    display: inline;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    justify-content: center;
+    font-weight: 600;
+    width: 100px;
+    height: 45px;
+    font-size: 12px;
+    padding: 10px 15px;
+    line-height: 18px;
+    white-space: nowrap;
+}
+
+.submit:hover {
+    background: rgb(49, 83, 203);
+}
+
+.delete {
+    background-image: url('/public/close.png');
+    border: 0;
+    width: 14px;
+    height: 14px;
+    padding: 0px;
+    overflow: hidden;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    position: absolute;
+    right: 10%;
+    margin-top: 13px;
+}
+
+
+.inputs {
+    display: flex;
+}
+.secondInput {
+    background-color: transparent;
+    color: #0e0e0e;
+    font-size: 1em;
+    height: 20px;
+    text-align: left;
+    letter-spacing: 1px;
+    padding: 15px 10px;
+    width: 60%;
+    font-family:  Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto, Helvetica, Arial, sans-serif;;
+    border: none;
+    outline: none;
+    border: 0px;
+    position: relative;
+    border: transparent;
+    border-radius: 10px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 0rem 0rem;
+    overflow: auto;
+    border: none;
+}
+
+
+#newTitleInput {
+    color: #0e0e0e;
+    font-size: 1em;
+    height: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+    padding: 15px 10px;
+    width: 30%;
+    font-family:  Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto, Helvetica, Arial, sans-serif;;
+    border: none;
+    outline: none;
+    border: 0px;
+
+
+}
+#newTitleInput::placeholder {
+    color: rgba(128, 138, 157, 0.51);
+    font-size: 14px;
+    font-weight: 100;
+    text-align: left;
+}
+#newTitleInput {
+    margin-bottom: 10px;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    border-top: 0px solid #eef0f5;
+    border-radius: 1px;
+}
+
+.error {
+    background-color: transparent;
+    width: 1000px;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto, Helvetica, Arial, sans-serif;
+    color: #ea3943;
+    position: absolute;
+    left: 35%;
+    padding-top: 30px;
+}
+
+.emptyList {
+    width: 200px;
+    position: absolute;
+    left: 40%;
+    top: 80%;
+}
+
+.sort {
+    background-image: url("/public/caret-down.png");
+    border: 0;
+    width: 7px;
+    height: 7px;
+    padding: 0px;
+    overflow: hidden;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    position: absolute;
+    margin-top: 4px;
+    margin-left: 7px;
+}
+
+table {
+    width: 1000px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12.5px;
+}
+
+
+th {
+    border-bottom: #eff2f5 solid 1px;
+    border-top: #eff2f5 solid 1px;
+    font-size: 12px;
+}
+
+td {
+    border-bottom: #eff2f5 solid 1px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.color {
+    color: #16c784
+}
+
+table th:nth-of-type(1) {
+    width: 20px;
+    text-align: left;
+}
+table th:nth-of-type(2) {
+    width: 30px;
+    text-align: left;
+}
+table th:nth-of-type(3) {
+    width: 200px;
+    text-align: right;
+}
+table th:nth-of-type(4) {
+    width: 200px;
+    text-align: right;
+}
+table th:nth-of-type(5) {
+    width: 200px;
+    text-align: right;
+}
+table th:nth-of-type(6) {
+    width: 200px;
+    text-align: right;
+}
+
+table td:nth-of-type(1) {
+    width: 20px;
+    color: rgb(88, 102, 126);
+    padding: 12.5px;
+    text-align: left;
+
+}
+table td:nth-of-type(2) {
+    width: 30px;
+    text-align: left;
+    padding: 12.5px;
+}
+table td:nth-of-type(3) {
+    width: 200px;
+    text-align: right;
+    color: #ea3943;
+}
+
+table td:nth-of-type(4) {
+    width:200px;
+    text-align: right;
+}
+table td:nth-of-type(5) {
+    width:200px;
+    text-align: right;
+}
+table td:nth-of-type(6) {
+    width:200px;
+    text-align: right;
+}
+
+td {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
