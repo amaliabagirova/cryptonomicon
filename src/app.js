@@ -97,14 +97,14 @@ function Crypto({coinName, value, clearTicker, meta, number, mktcap, supply}) {
 
         <td>
             {
-                value
+                value.replace(',', ' ')
             }
         </td>
 
         <td class='color'>
 
             {
-                meta
+                (((meta*100) / (Number(value.replace(',', '').slice(2)))) - 100).toFixed(2) + '%'
             }
         </td>
         <td>

@@ -90,9 +90,9 @@ class Store {
 
     sortValue = () => {
         if (this.isSortedAsc) {
-            this.coins.sort((a, b) => b.value - a.value)
+            this.coins.sort((a, b) => Number(b.value.replace(',', '').slice(2) - a.value.replace(',', '').slice(2)))
         } else {
-            this.coins.sort((a, b) => a.value - b.value.slice)
+            this.coins.sort((a, b) => Number(a.value.replace(',', '').slice(2) - b.value.replace(',', '').slice(2)))
         }
         this.isSortedAsc = !this.isSortedAsc
     }
@@ -124,9 +124,9 @@ class Store {
 
     sortCap = () => {
         if (this.isSortedAsc) {
-            this.coins.sort((a, b) => b.mktcap- a.mktcap)
+            this.coins.sort((a, b) => Number(b.value.replace(',', '').slice(2) - a.value.replace(',', '').slice(2)))
         } else {
-            this.coins.sort((a, b) => a.mktcap - b.mktcap)
+            this.coins.sort((a, b) => Number(a.value.replace(',', '').slice(2) - b.value.replace(',', '').slice(2)))
             console.log(this.coins.slice())
             debugger
         }
