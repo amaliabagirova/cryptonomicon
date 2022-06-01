@@ -1,14 +1,10 @@
 
 body {
     background-color: #ffffff;
-    background-image: url("/public/meme-background.png");
-    background-repeat: no-repeat;
-    background-attachment: scroll;
     font-family:  Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto, Helvetica, Arial, sans-serif;;
     color: #000000;
     padding: 50px 100px;
     margin: 0px;
-    background-position: bottom 72% right 1%;
 }
 
 
@@ -224,9 +220,6 @@ td {
     font-weight: 500;
 }
 
-.color {
-    color: #16c784
-}
 
 table th:nth-of-type(1) {
     width: 20px;
@@ -268,7 +261,6 @@ table td:nth-of-type(2) {
 table td:nth-of-type(3) {
     width: 200px;
     text-align: right;
-    color: #ea3943;
 }
 
 table td:nth-of-type(4) {
@@ -290,8 +282,17 @@ td {
 }
 
 
+.colorPos {
+    color: #16c784;
+    background-image: url("/public/updown.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
 
-
+.colorNeg {
+    color: #ea3943;
+}
 
 
 

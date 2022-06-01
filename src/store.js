@@ -44,7 +44,7 @@ class Store {
 
     submitSearch = () => {
         if(!this.coins.some((coin) => this.searchInput === coin.id)) {
-            const hello = Promise.all([getCurrency(this.searchInput, this.currencyInput), getMeta(this.searchInput, this.currencyInput), newMeta(this.searchInput, this.currencyInput), getSupply(this.searchInput, this.currencyInput)])
+            const hello = Promise.all([getSupply(this.searchInput, this.currencyInput)])
             hello.then(res => {
                 debugger
                 if (res[0] === undefined) {
@@ -52,7 +52,7 @@ class Store {
                     clearInterval(this.coins.find(coin => coin.value === undefined).ticker)
                 } else {
                     debugger
-                    this.coins = [...this.coins, this.createCoin({coinName: this.searchInput, value: res[0], ticker: this.createTicker(this.searchInput, this.currencyInput), currency: this.currencyInput, meta: res[1], number: ++this.number, mktcap: res[2], supply: res[3]})]
+                    this.coins = [...this.coins, this.createCoin({coinName: this.searchInput, value: res[0], ticker: this.createTicker(this.searchInput, this.currencyInput), currency: this.currencyInput, meta: res[1], mktcap: res[2], supply: res[3]})]
                 }
                 this.clearSearchInput()
                 this.clearCurrencyInput()
@@ -144,9 +144,6 @@ class Store {
         }
         this.isSortedAsc = !this.isSortedAsc
     }
-
-
-
 }
 
 export const store = new Store()

@@ -1,6 +1,10 @@
 import {observer} from "mobx-react-lite";
 import {store} from "./store";
 
+const divStyle = {
+    color: 'blue',
+};
+
 export const App = observer(() => {
     return (
         <div class='app'>
@@ -58,20 +62,21 @@ export const App = observer(() => {
             {
                 store.coins.length > 0
                     ?
-                    store.coins.map((coin) =>
+                    store.coins.map((coin, index) =>
                     <Crypto
                         coinName={coin.id}
                         value={coin.value}
                         clearTicker={store.clearTicker}
                         currency={coin.currency}
                         meta={coin.meta}
-                        number={coin.number}
+                        number={index+1}
                         mktcap={coin.mktcap}
                         supply={coin.supply}
                     />
                     )
                     : <div class='emptyList'> Your coin list is empty </div>
             }
+
 
     </tbody>
 </table>
@@ -80,6 +85,7 @@ export const App = observer(() => {
 })
 
 function Crypto({coinName, value, clearTicker, meta, number, mktcap, supply}) {
+    const metaPercent = (((meta*100) / (Number(value.replace(',', '').slice(2)))) - 100).toFixed(2)
     return <div class='parent'>
 
     <tr>
@@ -91,7 +97,7 @@ function Crypto({coinName, value, clearTicker, meta, number, mktcap, supply}) {
 
         <td>
             {
-                coinName + ' '
+                coinName
             }
         </td>
 
@@ -101,12 +107,15 @@ function Crypto({coinName, value, clearTicker, meta, number, mktcap, supply}) {
             }
         </td>
 
-        <td class='color'>
+
 
             {
-                (((meta*100) / (Number(value.replace(',', '').slice(2)))) - 100).toFixed(2) + '%'
+                metaPercent > 0
+                ?
+                    <td class='colorPos'>{metaPercent + '%'}</td>
+                    : <td class='colorNeg'>{metaPercent  + '%'}</td>
             }
-        </td>
+
         <td>
             {
                 mktcap
