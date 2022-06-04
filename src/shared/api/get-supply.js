@@ -5,6 +5,6 @@ export const getSupply = (coinName, cur) => baseRequest({url: `/pricemultifull?f
         if (res.Response === "Error") {
             return undefined
     }else {
-        return res['RAW'][coinName][cur]
+        return res['DISPLAY'][coinName][cur]
     }
     })

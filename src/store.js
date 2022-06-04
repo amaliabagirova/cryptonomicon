@@ -1,8 +1,9 @@
 import {makeAutoObservable} from "mobx";
-import {getCurrency} from "./shared/api/get-currency";
 import {getMeta} from "./shared/api/get-meta";
-import {newMeta} from "./shared/api/new-meta";
 import {getSupply} from "./shared/api/get-supply";
+import {getCMC} from "./shared/api/get-cmc";
+import {getGlobal} from './shared/api/global-data'
+
 
 class Store {
     constructor() {
@@ -11,30 +12,42 @@ class Store {
 
     searchInput = ''
     coins = []
+    globals = []
     errorText = ''
-    currencyInput =''
+    currencyInput = ''
     isSortedAsc = false
-    number=0
+
 
     changeSearchInput = (value) => {
         this.searchInput = value.toUpperCase()
         this.errorText = ''
     }
 
-    createCoin = ({coinName, value, ticker, currency, meta, number, mktcap, supply}) => ({
+
+    createCoin = ({symbol, coinName, value, ticker, currency, meta, mktcap, supply, image}) => ({
+        symbol,
         id: coinName,
         value,
         ticker,
         currency,
         meta,
-        number,
         mktcap,
-        supply
+        supply,
+        image
     })
 
-    createTicker = (coinName, currency) => setInterval(() => getCurrency(coinName, currency)
+    creatMenu = ({dominanceBtc, dominanceEth, cryptos, exchanges, marketCap, volume}) => ({
+        dominanceBtc,
+        dominanceEth,
+        cryptos,
+        exchanges,
+        marketCap,
+        volume
+    })
+
+    createTicker = (coinName, currency) => setInterval(() => getSupply(coinName, currency)
         .then(res => {
-            this.coins.find(coin => coin.id === coinName).value = res
+            this.coins.find(coin => coin.id === coinName).value = res['PRICE']
         }), 3000)
 
     clearTicker = (coinName) => {
@@ -43,31 +56,39 @@ class Store {
     }
 
     submitSearch = () => {
-        if(!this.coins.some((coin) => this.searchInput === coin.id)) {
-            const hello = Promise.all([getSupply(this.searchInput, this.currencyInput)])
+        if (!this.coins.some((coin) => this.searchInput === coin.id)) {
+            const hello = Promise.all([getSupply(this.searchInput, this.currencyInput), getMeta(this.searchInput, this.currencyInput), getCMC(this.currencyInput, this.searchInput)])
             hello.then(res => {
-                debugger
                 if (res[0] === undefined) {
-                    this.errorText = 'No results for ' + "\'" + this.searchInput + "\'"
+                    this.errorText = 'No results for ' + "\'" + this.searchInput + "\'" + ' in ' + "\'" + this.currencyInput + "\'"
                     clearInterval(this.coins.find(coin => coin.value === undefined).ticker)
                 } else {
-                    debugger
-                    this.coins = [...this.coins, this.createCoin({coinName: this.searchInput, value: res[0], ticker: this.createTicker(this.searchInput, this.currencyInput), currency: this.currencyInput, meta: res[1], mktcap: res[2], supply: res[3]})]
+                    this.coins = [...this.coins, this.createCoin({
+                        symbol: res[2]['name'],
+                        coinName: this.searchInput,
+                        value: res[0]['PRICE'],
+                        ticker: this.createTicker(this.searchInput, this.currencyInput),
+                        currency: this.currencyInput,
+                        meta: res[1],
+                        mktcap: res[0]['MKTCAP'],
+                        supply: res[0]['CIRCULATINGSUPPLY'],
+                        image: res[2]['logo']
+                    })]
                 }
                 this.clearSearchInput()
                 this.clearCurrencyInput()
             })
         } else if (this.coins.find((coin) => this.searchInput === coin.id) && (this.coins.find((coin) => this.searchInput === coin.id).currency !== this.currencyInput)) {
-            const hello = Promise.all([getCurrency(this.searchInput, this.currencyInput), getMeta(this.searchInput, this.currencyInput), newMeta(this.searchInput, this.currencyInput), getSupply(this.searchInput, this.currencyInput)])
+            const hello = Promise.all([getSupply(this.searchInput, this.currencyInput), getMeta(this.searchInput, this.currencyInput)])
             hello.then(res => {
                 let coinToChange = this.coins.find((coin) => this.searchInput === coin.id)
                 clearInterval(coinToChange.ticker)
-                coinToChange.value = res[0]
+                coinToChange.value = res[0]['PRICE']
                 coinToChange.currency = this.currencyInput
                 coinToChange.ticker = this.createTicker(coinToChange.id, coinToChange.currency)
                 coinToChange.currencyName = this.currencyInput
                 coinToChange.meta = res[1]
-                coinToChange.mktcap = res[2]
+                coinToChange.mktcap = res[0]['MKTCAP']
                 this.clearSearchInput()
                 this.clearCurrencyInput()
             })
@@ -90,34 +111,26 @@ class Store {
 
     sortValue = () => {
         if (this.isSortedAsc) {
-            this.coins.sort((a, b) => Number(b.value.replace(',', '').slice(2) - a.value.replace(',', '').slice(2)))
+            this.coins.sort((a, b) => (Number(b.value.replace(/[^.\d]/g, "")) - Number(a.value.replace(/[^.\d]/g, ""))))
         } else {
-            this.coins.sort((a, b) => Number(a.value.replace(',', '').slice(2) - b.value.replace(',', '').slice(2)))
+            this.coins.sort((a, b) => (Number(a.value.replace(/[^.\d]/g, "")) - Number(b.value.replace(/[^.\d]/g, ""))))
         }
         this.isSortedAsc = !this.isSortedAsc
     }
+
     sortMeta = () => {
         if (this.isSortedAsc) {
-            this.coins.sort((a, b) => b.meta - a.meta)
+            this.coins.sort((a, b) => ((((b.meta * 100) / (Number(b.value.replace(/[^.\d]/g, "")))) - 100).toFixed(2) - (((a.meta) / (Number(a.value.replace(/[^.\d]/g, "")))) - 100).toFixed(2)))
         } else {
-            this.coins.sort((a, b) => a.meta - b.meta)
+            this.coins.sort((a, b) => ((((a.meta * 100) / (Number(a.value.replace(/[^.\d]/g, "")))) - 100).toFixed(2) - (((b.meta) / (Number(b.value.replace(/[^.\d]/g, "")))) - 100).toFixed(2)))
         }
         this.isSortedAsc = !this.isSortedAsc
     }
     sortId = () => {
         if (this.isSortedAsc) {
-            this.coins.sort((a, b) => b.id - a.id)
+            this.coins.sort()
         } else {
-            this.coins.sort((a, b) => a.id - b.id)
-        }
-        this.isSortedAsc = !this.isSortedAsc
-    }
-
-    sortNumber = () => {
-        if (this.isSortedAsc) {
-            this.coins.sort((a, b) => b.number - a.number)
-        } else {
-            this.coins.sort((a, b) => a.number - b.number)
+            this.coins.reverse()
         }
         this.isSortedAsc = !this.isSortedAsc
     }
@@ -135,14 +148,30 @@ class Store {
 
     sortSupply = () => {
         if (this.isSortedAsc) {
-            this.coins.sort((a, b) => b.supply - a.supply)
+            this.coins.sort((a, b) => b.supply.replace(/[^.\d]/g, " ") - a.supply.replace(/[^.\d]/g, " "))
             console.log(this.coins)
         } else {
-            this.coins.sort((a, b) => a.supply - b.supply)
+            this.coins.sort((a, b) => a.supply.replace(/[^.\d]/g, " ") - b.supply.replace(/[^.\d]/g, " "))
             debugger
             console.log(this.coins)
         }
         this.isSortedAsc = !this.isSortedAsc
+    }
+
+    submitSearchTest = () => {
+            const helloTest = Promise.all([getGlobal('USD')])
+            helloTest.then(res => {
+                debugger
+                this.globals = [this.creatMenu({
+                    dominanceBtc: res['0']['data']['btc_dominance'],
+                    dominanceEth: res['0']['data']['eth_dominance'],
+                    volume: res['0']['data']['quote']['USD']['total_volume_24h'],
+                    cryptos: res['0']['data']['total_cryptocurrencies'],
+                    exchanges: res['0']['data']['active_exchanges'],
+                    marketCap: res['0']['data']['quote']['USD']['total_market_cap']
+
+                })]
+            })
     }
 }
 
